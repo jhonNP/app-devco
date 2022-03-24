@@ -1,0 +1,26 @@
+<div class="col-md-12">
+  <h3>Devco</h3>
+
+
+  <form #registerForm="ngForm" (ngSubmit)="onSubmit(registerForm)" class="col-md-7 no-padding">
+      <p>
+          <label>Email:</label>
+          <input type="email" class="form-control" name="email" #email="ngModel" [(ngModel)]="user.email" required email placeholder="email">
+          <span  class="text-danger animated fadeIn" *ngIf="!registerForm.pristine && registerForm.controls['email'].errors">El email no es valido</span>
+      </p>
+      <p>
+        <label>Nombres y apellidos:</label>
+        <input type="text" class="form-control" name="name" #name="ngModel" [(ngModel)]="user.name" required minlength="2" placeholder="Nombres y apellidos">
+        <span class="text-danger animated fadeIn" *ngIf="!registerForm.pristine && registerForm.controls['name'].errors">Por favor digita tu nombre</span>
+    </p>
+      <p>
+          <label>Contraseña:</label>
+          <input type="password" class="form-control" name="password" #password="ngModel" [(ngModel)]="user.password" required placeholder="password" minlength="6">
+          <span class="text-danger animated fadeIn" *ngIf="!registerForm.pristine &&registerForm.controls['password'].errors">La contraseña no es valido</span>
+      </p>
+      <input type="submit" value="Crear" class="btn btn-primary" [disabled]="!registerForm.form.valid">
+      &nbsp;&nbsp;<a [routerLink]="['/login']">Iniciar sesión</a>
+
+
+  </form>
+</div>

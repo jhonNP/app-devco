@@ -1,0 +1,19 @@
+<div class="col-md-12">
+  <h3>Devco</h3>
+
+  <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)" class="col-md-7 no-padding">
+      <p>
+          <label>Email:</label>
+          <input type="email" class="form-control" name="email" #email="ngModel" [(ngModel)]="user.email" required email placeholder="email">
+          <span  class="text-danger animated fadeIn" *ngIf="!loginForm.pristine && loginForm.controls['email'].errors">El email no es valido</span>
+      </p>
+      <p>
+          <label>Contraseña:</label>
+          <input type="password" class="form-control" name="password" #password="ngModel" [(ngModel)]="user.password" required placeholder="password" minlength="6">
+          <span class="text-danger animated fadeIn" *ngIf="!loginForm.pristine && loginForm.controls['password'].errors">La contraseña no es valido</span>
+      </p>
+      <input type="submit" value="Ingresar" class="btn btn-primary" [disabled]="!loginForm.form.valid">
+      &nbsp;&nbsp;<a [routerLink]="['/register']">¿No tienes cuenta?</a>
+
+  </form>
+</div>
