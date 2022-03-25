@@ -38,7 +38,7 @@ pipeline {
 
     stage('Build pdn') {
       when {
-            branch "master"
+            branch "main"
       }
       steps {
         nodejs('nodev17.7.2') {
