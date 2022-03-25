@@ -7,14 +7,7 @@ pipeline {
 
   stages {
     
-    stage('Example') {
-       echo env.BRANCH_NAME
-       if (env.BRANCH_NAME != 'master' && env.BRANCH_NAME != 'staging') {
-        echo 'This is not master or staging'
-       } else {
-        echo 'things and stuff'
-    }
-    }
+ 
     stage('Install dependecies') {
       steps {
         checkout([$class: 'GitSCM', branches: [[name: '*/main'], [name: '*/develop']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/jhonNP/app-devco.git']]])
