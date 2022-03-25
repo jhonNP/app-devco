@@ -6,9 +6,15 @@ pipeline {
   }
 
   stages {
-
-
-
+    
+    stage('Example') {
+       echo env.BRANCH_NAME
+       if (env.BRANCH_NAME != 'master' && env.BRANCH_NAME != 'staging') {
+        echo 'This is not master or staging'
+       } else {
+        echo 'things and stuff'
+    }
+    }
     stage('Install dependecies') {
       steps {
         checkout([$class: 'GitSCM', branches: [[name: '*/main'], [name: '*/develop']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/jhonNP/app-devco.git']]])
@@ -26,11 +32,9 @@ pipeline {
     }
 
     stage('Build develop') {
-      when {
-        expression {
-            return env.BRANCH_NAME = 'develop';
-        }
-      }
+       when {
+            branch "develop"
+       }
       steps {
         nodejs('nodev17.7.2') {
             sh "npm run build:dev"
@@ -41,10 +45,7 @@ pipeline {
 
     stage('Build pdn') {
       when {
-        expression {
-            return env.BRANCH_NAME = 'main';
-        }
-
+            branch "master"
       }
       steps {
         nodejs('nodev17.7.2') {
