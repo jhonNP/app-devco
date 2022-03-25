@@ -1,0 +1,58 @@
+pipeline {
+  agent any
+
+  options {
+    timeout(time: 2, unit: 'MINUTES')
+  }
+
+  stages {
+
+
+
+    stage('Install dependecies') {
+      steps {
+        checkout([$class: 'GitSCM', branches: [[name: '*/main'], [name: '*/develop']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/jhonNP/app-devco.git']]])
+        nodejs('nodev17.7.2') {
+            sh "npm install"
+        }
+      }
+    }
+    stage('Run tests') {
+      steps {
+        nodejs('nodev17.7.2') {
+            sh "npm run test -- --no-watch"
+        }
+      }
+    }
+
+    stage('Build develop') {
+      when {
+        expression {
+            return env.BRANCH_NAME = 'develop';
+        }
+      }
+      steps {
+        nodejs('nodev17.7.2') {
+            sh "npm run build:dev"
+        }
+
+      }
+    }
+
+    stage('Build pdn') {
+      when {
+        expression {
+            return env.BRANCH_NAME = 'main';
+        }
+
+      }
+      steps {
+        nodejs('nodev17.7.2') {
+            sh "npm run build:prod"
+        }
+      }
+
+    }
+  }
+}
+
