@@ -4,6 +4,10 @@ pipeline {
   options {
     timeout(time: 2, unit: 'MINUTES')
   }
+  
+  environment {
+      TAG = VersionNumber (versionNumberString: '${BRANCH_NAME}.${BUILD_DATE_FORMATTED, "yyyyMMdd"}.${BUILD_NUMBER}')
+  }
 
   stages {
     
@@ -31,6 +35,7 @@ pipeline {
       steps {
         nodejs('nodev17.7.2') {
             sh "npm run build:dev"
+            sh "zip -r ${TAG}.zip dist/my-app-devco/"
         }
 
       }
@@ -38,7 +43,7 @@ pipeline {
 
     stage('Build pdn') {
       when {
-            branch "main"
+            branch "master"
       }
       steps {
         nodejs('nodev17.7.2') {
@@ -46,6 +51,11 @@ pipeline {
         }
       }
 
+    }
+    stage('compress build') {
+      steps {
+        sh "zip -r ${TAG}.zip dist/my-app-devco/"
+       }
     }
   }
 }
